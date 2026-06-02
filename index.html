@@ -49,10 +49,7 @@
 
 <script>
     // GitHub korumasını aşmak için anahtarı parçalara bölerek birleştirdik!
-    const p1 = "AQ.Ab8RN6Jjdxejyk";
-    const p2 = "2N77cfYl7D0iZdbILspL";
-    const p3 = "oQV4j22OjAi2OdHw";
-    const API_KEY = p1 + p2 + p3;
+  const API_KEY = prompt("Lütfen Google AI Studio'dan aldığınız tam API anahtarını (AIzaSy...) buraya yapıştırın reis:");
 
     async function cozumuGetir() {
         const problemInput = document.getElementById('problem').value;
