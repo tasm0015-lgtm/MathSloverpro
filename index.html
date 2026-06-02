@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>MathSolver Pro</title>
+    <meta name="description" content="Solve any math problem instantly with AI — step-by-step solutions and full verification" />
+    <meta name="author" content="Hercules" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"
+    />
+
+    <meta property="og:title" content="Hercules App" />
+    <meta
+      property="og:description"
+      content="An app made by https://hercules.app"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://hercules.app/og/app/01KT4JQG487BEYBX6RA36VQDG9.png"
+    />
+    <meta property="og:image:type" content="image/png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:image"
+      content="https://hercules.app/og/app/01KT4JQG487BEYBX6RA36VQDG9.png"
+    />
+    <meta name="twitter:site" content="@usehercules" />
+
+    <!-- Fonts -->
+    
+    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Fira+Code:wght@300..700&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+      crossorigin
+    />
+
+    <!-- Detect dark mode preference and set the class before next-themes loads. This avoids a flash of unstyled content (FOUC) when the page loads. -->
+    <script>
+      try {
+        let theme = localStorage.getItem("theme");
+        if (theme === "system" || !theme) {
+          let prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          theme = prefersDark ? "dark" : "light";
+        }
+        document.documentElement.classList.add(theme);
+      } catch (e) {}
+    </script>
+
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="MathSolver Pro" />
+    <link rel="apple-touch-icon" href="/icon/icon-192.png" />
+
+    <script type="module" crossorigin src="/assets/index-Cs8yTiQe.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-C06Jg3mo.css">
+  <script type="module" src="/_hercules/i.js?websiteId=01KT4JQG487BEYBX6RA36VQDG9&organizationId=org_01KT4JNV9444X3YQQB6SVQP210"></script></head>
+  <body>
+    <div id="root"></div>
+  <script>
+  (function () {
+    function initHerculesBadge() {
+      const badge = document.getElementById("5fcb507a");
+      if (!badge) return;
+
+      // Get referral information
+      const hostname = window.location.hostname || "unknown";
+      const fullUrl = encodeURIComponent(window.location.href);
+
+      // Build tracking URL with UTM parameters
+      const baseUrl = "https://hercules.app";
+      const params = new URLSearchParams({
+        utm_source: hostname,
+        utm_medium: "watermark_banner",
+        utm_campaign: "built_with_hercules",
+        referrer: fullUrl,
+      });
+
+      // Update the CTA href with tracking parameters
+      const cta = document.getElementById("5fcb507a-cta");
+      if (cta) {
+        cta.href = baseUrl + "?" + params.toString();
+      }
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initHerculesBadge);
+    } else {
+      initHerculesBadge();
+    }
+  })();
+</script>
+<aside
+  id="5fcb507a"
+  role="complementary"
+  aria-label="Built with Hercules"
+  style="
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-family:
+      -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;,
+      Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    pointer-events: auto;
+    user-select: none;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  "
+>
+  <a
+    id="5fcb507a-cta"
+    href="https://hercules.app"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Built with Hercules"
+    style="
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: inherit;
+      white-space: nowrap;
+    "
+  >
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 16 16"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      style="flex-shrink: 0"
+    >
+      <path d="m7.99 0-7.01 9.38 6.02-.42-4.96 7.04 12.96-10-7.01.47 7.01-6.47z"></path>
+    </svg>
+    <span>Built with <strong>Hercules</strong></span>
+  </a>
+</aside>
+<style>
+  /* Light mode styles */
+  @media (prefers-color-scheme: light) {
+    #5fcb507a {
+      background-color: #1a1a1a !important;
+      color: #ffffff !important;
+    }
+
+    #5fcb507a:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+    }
+  }
+
+  /* Dark mode styles */
+  @media (prefers-color-scheme: dark) {
+    #5fcb507a {
+      background-color: #1a1a1a !important;
+      color: #ffffff !important;
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    }
+
+    #5fcb507a:hover {
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.15) !important;
+    }
+  }
+
+  #5fcb507a-cta:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  @media (max-width: 640px) {
+    #5fcb507a {
+      bottom: 12px !important;
+      right: 12px !important;
+      font-size: 12px !important;
+    }
+  }
+
+  @media print {
+    #5fcb507a {
+      display: none !important;
+    }
+  }
+</style>
+</body>
+</html>
