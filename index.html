@@ -1,209 +1,163 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>MathSolver Pro</title>
-    <meta name="description" content="Solve any math problem instantly with AI — step-by-step solutions and full verification" />
-    <meta name="author" content="Hercules" />
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"
-    />
-
-    <meta property="og:title" content="Hercules App" />
-    <meta
-      property="og:description"
-      content="An app made by https://hercules.app"
-    />
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:image"
-      content="https://hercules.app/og/app/01KT4JQG487BEYBX6RA36VQDG9.png"
-    />
-    <meta property="og:image:type" content="image/png" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:image"
-      content="https://hercules.app/og/app/01KT4JQG487BEYBX6RA36VQDG9.png"
-    />
-    <meta name="twitter:site" content="@usehercules" />
-
-    <!-- Fonts -->
-    
-    
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Fira+Code:wght@300..700&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-      crossorigin
-    />
-
-    <!-- Detect dark mode preference and set the class before next-themes loads. This avoids a flash of unstyled content (FOUC) when the page loads. -->
-    <script>
-      try {
-        let theme = localStorage.getItem("theme");
-        if (theme === "system" || !theme) {
-          let prefersDark = window.matchMedia(
-            "(prefers-color-scheme: dark)",
-          ).matches;
-          theme = prefersDark ? "dark" : "light";
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathSolver Pro - Yapay Zeka Matematik Asistanı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Space Grotesk', sans-serif;
         }
-        document.documentElement.classList.add(theme);
-      } catch (e) {}
-    </script>
 
-    <!-- PWA Configuration -->
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#4f46e5" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="MathSolver Pro" />
-    <link rel="apple-touch-icon" href="/icon/icon-192.png" />
+        body {
+            background-color: #0d0e12;
+            color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-    <script type="module" crossorigin src="/assets/index-Cs8yTiQe.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-C06Jg3mo.css">
-  <script type="module" src="/_hercules/i.js?websiteId=01KT4JQG487BEYBX6RA36VQDG9&organizationId=org_01KT4JNV9444X3YQQB6SVQP210"></script></head>
-  <body>
-    <div id="root"></div>
-  <script>
-  (function () {
-    function initHerculesBadge() {
-      const badge = document.getElementById("5fcb507a");
-      if (!badge) return;
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: #161822;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #23263a;
+        }
 
-      // Get referral information
-      const hostname = window.location.hostname || "unknown";
-      const fullUrl = encodeURIComponent(window.location.href);
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
 
-      // Build tracking URL with UTM parameters
-      const baseUrl = "https://hercules.app";
-      const params = new URLSearchParams({
-        utm_source: hostname,
-        utm_medium: "watermark_banner",
-        utm_campaign: "built_with_hercules",
-        referrer: fullUrl,
-      });
+        p.subtitle {
+            color: #9ca3af;
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
 
-      // Update the CTA href with tracking parameters
-      const cta = document.getElementById("5fcb507a-cta");
-      if (cta) {
-        cta.href = baseUrl + "?" + params.toString();
-      }
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background-color: #1f2232;
+            border: 1px solid #2d314d;
+            border-radius: 10px;
+            padding: 15px;
+            color: #fff;
+            font-size: 15px;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            border-color: #6366f1;
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .result-box {
+            margin-top: 25px;
+            background-color: #1f2232;
+            border-left: 4px solid #6366f1;
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            display: none;
+        }
+
+        .result-box h3 {
+            font-size: 16px;
+            color: #6366f1;
+            margin-bottom: 10px;
+        }
+
+        .result-content {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #e5e7eb;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>⚡ MathSolver Pro</h1>
+    <p class="subtitle">Soruları samimi dille, adım adım çözen ve sağlamasını yapan akıllı asistan</p>
+    
+    <div class="input-group">
+        <label for="problem">Matematik Sorununu Yaz:</label>
+        <textarea id="problem" placeholder="Örn: f(x) = 3x^2 + 5x fonksiyonunun türevi nedir? veya bir integral sorusu yazın..."></textarea>
+    </div>
+
+    <button onclick="cozumuGetir()">Soruyu Çöz</button>
+
+    <div class="result-box" id="resultBox">
+        <h3>✨ Yapay Zeka Adım Adım Çözümü:</h3>
+        <div class="result-content" id="resultContent">Çözüm yükleniyor...</div>
+    </div>
+</div>
+
+<script>
+    function cozumuGetir() {
+        const problemInput = document.getElementById('problem').value;
+        const resultBox = document.getElementById('resultBox');
+        const resultContent = document.getElementById('resultContent');
+
+        if (!problemInput.trim()) {
+            alert("Lütfen önce bir soru yaz reis!");
+            return;
+        }
+
+        resultBox.style.display = "block";
+        resultContent.innerText = "Yapay zeka soruyu inceliyor, adım adım çözümü hazırlıyor ve sağlamasını yapıyor... Lütfen bekleyin reis.";
+
+        // API BAĞLANTISI BURAYA GELECEK
+        setTimeout(() => {
+            resultContent.innerText = "Siten harika şekilde çalışıyor kral! Buraya birazdan ücretsiz Gemini API anahtarını eklediğimizde, yazdığın her soruyu saniyeler içinde samimi bir dille çözecek.";
+        }, 2000);
     }
-
-    // Initialize when DOM is ready
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initHerculesBadge);
-    } else {
-      initHerculesBadge();
-    }
-  })();
 </script>
-<aside
-  id="5fcb507a"
-  role="complementary"
-  aria-label="Built with Hercules"
-  style="
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    font-family:
-      -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;,
-      Arial, sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    pointer-events: auto;
-    user-select: none;
-    background-color: #1a1a1a;
-    color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-  "
->
-  <a
-    id="5fcb507a-cta"
-    href="https://hercules.app"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Built with Hercules"
-    style="
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 12px;
-      text-decoration: none;
-      color: inherit;
-      white-space: nowrap;
-    "
-  >
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 16 16"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      style="flex-shrink: 0"
-    >
-      <path d="m7.99 0-7.01 9.38 6.02-.42-4.96 7.04 12.96-10-7.01.47 7.01-6.47z"></path>
-    </svg>
-    <span>Built with <strong>Hercules</strong></span>
-  </a>
-</aside>
-<style>
-  /* Light mode styles */
-  @media (prefers-color-scheme: light) {
-    #5fcb507a {
-      background-color: #1a1a1a !important;
-      color: #ffffff !important;
-    }
 
-    #5fcb507a:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
-    }
-  }
-
-  /* Dark mode styles */
-  @media (prefers-color-scheme: dark) {
-    #5fcb507a {
-      background-color: #1a1a1a !important;
-      color: #ffffff !important;
-      box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.1) !important;
-    }
-
-    #5fcb507a:hover {
-      box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.15) !important;
-    }
-  }
-
-  #5fcb507a-cta:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-  }
-
-  @media (max-width: 640px) {
-    #5fcb507a {
-      bottom: 12px !important;
-      right: 12px !important;
-      font-size: 12px !important;
-    }
-  }
-
-  @media print {
-    #5fcb507a {
-      display: none !important;
-    }
-  }
-</style>
 </body>
 </html>
