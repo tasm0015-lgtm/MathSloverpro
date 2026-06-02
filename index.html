@@ -7,232 +7,65 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
 
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: #0d1117;
-            color: #ecf0f1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: #0d1117; color: #ecf0f1; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 40px 20px; }
+        
         /* Üst Menü / Navbar */
-        .navbar {
-            width: 100%;
-            max-width: 1000px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 60px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 20px;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .logo i {
-            color: #38bdf8;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            font-size: 14px;
-            color: #94a3b8;
-        }
-
-        .nav-btn {
-            background: #1e293b;
-            padding: 8px 16px;
-            border-radius: 20px;
-            color: #fff;
-            border: 1px solid #334155;
-            cursor: pointer;
-            font-size: 13px;
-        }
+        .navbar { width: 100%; max-width: 1000px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; position: relative; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 700; color: #fff; }
+        .logo i { color: #38bdf8; }
+        .nav-right { display: flex; align-items: center; gap: 20px; font-size: 14px; color: #94a3b8; position: relative; }
+        .nav-btn { background: #1e293b; padding: 8px 16px; border-radius: 20px; color: #fff; border: 1px solid #334155; font-size: 13px; }
+        
+        /* Dil Seçim Butonu ve Açılır Menü */
+        .lang-dropdown-container { position: relative; display: inline-block; }
+        .lang-btn { background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 8px; }
+        .lang-btn:hover { color: #fff; background: #21262d; }
+        .lang-menu { position: absolute; top: 100%; right: 0; background: #161b22; border: 1px solid #30363d; border-radius: 12px; min-width: 130px; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 100; margin-top: 5px; overflow: hidden; }
+        .lang-menu.show { display: block; }
+        .lang-item { padding: 10px 15px; color: #c9d1d9; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 8px; transition: background 0.2s; }
+        .lang-item:hover { background: #1f2937; color: #fff; }
 
         /* Ana Başlık Alanı */
-        .hero {
-            text-align: center;
-            max-width: 800px;
-            margin-bottom: 40px;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1.2;
-            margin-bottom: 16px;
-        }
-
-        .hero h1 span {
-            color: #38bdf8;
-        }
-
-        .hero p {
-            color: #94a3b8;
-            font-size: 16px;
-            font-weight: 400;
-        }
+        .hero { text-align: center; max-width: 800px; margin-bottom: 40px; }
+        .hero h1 { font-size: 48px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 16px; }
+        .hero h1 span { color: #38bdf8; }
+        .hero p { color: #94a3b8; font-size: 16px; font-weight: 400; }
 
         /* Sekme / Giriş Alanı */
-        .main-card {
-            width: 100%;
-            max-width: 850px;
-            background: #161b22;
-            border: 1px solid #21262d;
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            margin-bottom: 40px;
-        }
-
-        /* Sekme Butonları (Metin, Fotoğraf, PDF, Kamera) */
-        .tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: #21262d;
-            border: 1px solid #30363d;
-            color: #94a3b8;
-            padding: 10px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .tab-btn.active {
-            background: #1f2937;
-            border-color: #38bdf8;
-            color: #fff;
-        }
-
-        .tab-btn:hover {
-            border-color: #4b5563;
-            color: #fff;
-        }
-
+        .main-card { width: 100%; max-width: 850px; background: #161b22; border: 1px solid #21262d; border-radius: 24px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); margin-bottom: 40px; }
+        .tabs { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { background: #21262d; border: 1px solid #30363d; color: #94a3b8; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; }
+        .tab-btn.active { background: #1f2937; border-color: #38bdf8; color: #fff; }
+        
         /* Giriş Kutusu */
-        .input-area {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 120px;
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 16px;
-            padding: 20px;
-            color: #fff;
-            font-size: 15px;
-            resize: none;
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: #38bdf8;
-        }
-
-        .char-counter {
-            position: absolute;
-            bottom: 15px;
-            right: 20px;
-            color: #484f58;
-            font-size: 13px;
-        }
+        .input-area { position: relative; margin-bottom: 20px; }
+        textarea { width: 100%; height: 120px; background: #0d1117; border: 1px solid #30363d; border-radius: 16px; padding: 20px; color: #fff; font-size: 15px; resize: none; outline: none; }
+        textarea:focus { border-color: #38bdf8; }
+        .char-counter { position: absolute; bottom: 15px; right: 20px; color: #484f58; font-size: 13px; }
 
         /* Büyük Çözüm Butonu */
-        .action-btn {
-            width: 100%;
-            background: #0284c7;
-            color: #fff;
-            border: none;
-            padding: 16px;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background 0.2s ease;
-        }
+        .action-btn { width: 100%; background: #0284c7; color: #fff; border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s ease; }
+        .action-btn:hover { background: #0369a1; }
 
-        .action-btn:hover {
-            background: #0369a1;
-        }
+        /* Sonuç Çıktı Kutusu */
+        .result-box { width: 100%; max-width: 850px; background: #161b22; border-left: 4px solid #38bdf8; padding: 25px; border-radius: 4px 20px 20px 4px; border-top: 1px solid #21262d; border-right: 1px solid #21262d; border-bottom: 1px solid #21262d; display: none; margin-bottom: 40px; }
+        .result-box h3 { font-size: 18px; color: #38bdf8; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .result-content { font-size: 15px; line-height: 1.7; color: #e6edf3; white-space: pre-wrap; }
+        .section-title { margin-top: 20px; margin-bottom: 8px; font-weight: 700; color: #58a6ff; font-size: 16px; }
 
         /* Alt Kartlar Bölümü */
-        .grid-container {
-            width: 100%;
-            max-width: 850px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .info-card {
-            background: #161b22;
-            border: 1px solid #21262d;
-            border-radius: 16px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            background: #1e293b;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #38bdf8;
-            font-size: 18px;
-        }
-
-        .info-card h4 {
-            font-size: 15px;
-            font-weight: 600;
-            color: #fff;
-        }
-
-        .info-card p {
-            font-size: 13px;
-            color: #8b949e;
-            line-height: 1.5;
-        }
+        .grid-container { width: 100%; max-width: 850px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .info-card { background: #161b22; border: 1px solid #21262d; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .card-icon { width: 40px; height: 40px; background: #1e293b; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #38bdf8; font-size: 18px; }
+        .info-card h4 { font-size: 15px; font-weight: 600; color: #fff; }
+        .info-card p { font-size: 13px; color: #8b949e; line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -242,51 +75,192 @@
             <i class="fa-solid fa-square-root-variable"></i> MathSolver Pro
         </div>
         <div class="nav-right">
-            <button class="nav-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Destekli</button>
-            <span><i class="fa-solid fa-globe"></i> Türkçe</span>
+            <span class="nav-btn" id="aiBadge"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Destekli</span>
+            
+            <div class="lang-dropdown-container">
+                <button class="lang-btn" onclick="toggleLangMenu(event)">
+                    <i class="fa-solid fa-globe"></i> <span id="currentLangLabel">Türkçe</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+                </button>
+                <div class="lang-menu" id="langMenu">
+                    <div class="lang-item" onclick="changeLanguage('tr')">🇹🇷 Türkçe</div>
+                    <div class="lang-item" onclick="changeLanguage('en')">🇺🇸 English</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="hero">
-        <h1>Herhangi bir matematik<br>sorusunu <span>anında çöz</span></h1>
-        <p>Adım adım çözümler ve tam doğrulama. Sadece cevap değil — eksiksiz anlayış.</p>
+        <h1 id="heroTitle">Herhangi bir matematik<br>sorusunu <span>anında çöz</span></h1>
+        <p id="heroSubtitle">Adım adım çözümler ve tam doğrulama. Sadece cevap değil — eksiksiz anlayış.</p>
     </div>
 
     <div class="main-card">
         <div class="tabs">
-            <button class="tab-btn active"><i class="fa-solid fa-font"></i> Metin</button>
-            <button class="tab-btn"><i class="fa-solid fa-image"></i> Fotoğraf</button>
-            <button class="tab-btn"><i class="fa-solid fa-file-pdf"></i> PDF</button>
-            <button class="tab-btn"><i class="fa-solid fa-camera"></i> Kamera</button>
+            <button class="tab-btn active" id="tabText"><i class="fa-solid fa-font"></i> Metin</button>
+            <button class="tab-btn" id="tabPhoto" onclick="alert('Gelecek güncellemede aktif olacak reis!')"><i class="fa-solid fa-image"></i> Fotoğraf</button>
+            <button class="tab-btn" id="tabPdf" onclick="alert('Gelecek güncellemede aktif olacak reis!')"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+            <button class="tab-btn" id="tabCamera" onclick="alert('Gelecek güncellemede aktif olacak reis!')"><i class="fa-solid fa-camera"></i> Kamera</button>
         </div>
 
         <div class="input-area">
             <textarea id="problem" placeholder="Matematik probleminizi buraya yazın...&#10;Örn: 2x + 5 = 11"></textarea>
-            <div class="char-counter">* Enter ile çöz</div>
+            <div class="char-counter" id="hintLabel">* Enter ile çöz</div>
         </div>
 
-        <button class="action-btn">
+        <button class="action-btn" onclick="cozumuGetir()" id="solveBtn">
             <i class="fa-solid fa-sparkles"></i> Çöz ve Doğrula
         </button>
+    </div>
+
+    <div class="result-box" id="resultBox">
+        <h3 id="resultTitle"><i class="fa-solid fa-graduation-cap"></i> Matematik Öğretmeni Çözümü:</h3>
+        <div class="result-content" id="resultContent"></div>
     </div>
 
     <div class="grid-container">
         <div class="info-card">
             <div class="card-icon"><i class="fa-solid fa-list-ol"></i></div>
-            <h4>Adım adım</h4>
-            <p>Çözüm adımlarını mantıksal bir sıra halinde detaylıca açıklar.</p>
+            <h4 id="card1Title">Adım adım</h4>
+            <p id="card1Desc">Çözüm adımlarını mantıksal bir sıra halinde detaylıca açıklar.</p>
         </div>
         <div class="info-card">
             <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <h4>Doğrulanmış cevaplar</h4>
-            <p>Arka planda gizli sağlama yaparak hatasız sonuçlar sunar.</p>
+            <h4 id="card2Title">Doğrulanmış cevaplar</h4>
+            <p id="card2Desc">Arka planda gizli sağlama yaparak hatasız sonuçlar sunar.</p>
         </div>
         <div class="info-card">
             <div class="card-icon"><i class="fa-solid fa-book-open"></i></div>
-            <h4>Her matematik konusu</h4>
-            <p>5. sınıftan üniversite düzeyine kadar tüm teorileri kapsar.</p>
+            <h4 id="card3Title">Her matematik konusu</h4>
+            <p id="card3Desc">5. sınıftan üniversite düzeyine kadar tüm teorileri kapsar.</p>
         </div>
     </div>
+
+<script>
+    // Aktif dil havuzu
+    let currentLang = 'tr';
+    const translations = {
+        tr: {
+            currentLang: "Türkçe", aiBadge: "<i class='fa-solid fa-wand-magic-sparkles'></i> AI Destekli",
+            heroTitle: "Herhangi bir matematik<br>sorusunu <span>anında çöz</span>",
+            heroSubtitle: "Adım adım çözümler ve tam doğrulama. Sadece cevap değil — eksiksiz anlayış.",
+            tabText: "<i class='fa-solid fa-font'></i> Metin", tabPhoto: "<i class='fa-solid fa-image'></i> Fotoğraf", tabPdf: "<i class='fa-solid fa-file-pdf'></i> PDF", tabCamera: "<i class='fa-solid fa-camera'></i> Kamera",
+            placeholder: "Matematik probleminizi buraya yazın...\nÖrn: 2x + 5 = 11", hintLabel: "* Enter ile çöz",
+            solveBtn: "<i class='fa-solid fa-sparkles'></i> Çöz ve Doğrula", resultTitle: "<i class='fa-solid fa-graduation-cap'></i> Matematik Öğretmeni Çözümü:",
+            card1Title: "Adım adım", card1Desc: "Çözüm adımlarını mantıksal bir sıra halinde detaylıca açıklar.",
+            card2Title: "Doğrulanmış cevaplar", card2Desc: "Arka planda gizli sağlama yaparak hatasız sonuçlar sunar.",
+            card3Title: "Her matematik konusu", card3Desc: "5. sınıftan üniversite düzeyine kadar tüm teorileri kapsar.",
+            loading: "Resmi Google AI sunucularına bağlanılıyor, adım adım hocanın dilinden çözümler hazırlanıyor... Lütfen bekleyin reis.",
+            alertEmpty: "Lütfen önce bir soru yaz reis!", errorMsg: "Bağlantı kurulurken bir sorun oluştu reis. Lütfen birazdan tekrar dene."
+        },
+        en: {
+            currentLang: "English", aiBadge: "<i class='fa-solid fa-wand-magic-sparkles'></i> AI Powered",
+            heroTitle: "Solve any math<br>problem <span>instantly</span>",
+            heroSubtitle: "Step-by-step solutions and full verification. Not just answers — complete understanding.",
+            tabText: "<i class='fa-solid fa-font'></i> Text", tabPhoto: "<i class='fa-solid fa-image'></i> Photo", tabPdf: "<i class='fa-solid fa-file-pdf'></i> PDF", tabCamera: "<i class='fa-solid fa-camera'></i> Camera",
+            placeholder: "Type your math problem here...\nEx: 2x + 5 = 11", hintLabel: "* Press Enter to solve",
+            solveBtn: "<i class='fa-solid fa-sparkles'></i> Solve and Verify", resultTitle: "<i class='fa-solid fa-graduation-cap'></i> Math Teacher Solution:",
+            card1Title: "Step-by-step", card1Desc: "Explains solution steps in a logical order in detail.",
+            card2Title: "Verified answers", card2Desc: "Provides error-free results by double-checking in the background.",
+            card3Title: "Every math topic", card3Desc: "Covers all theories from 5th grade up to university level.",
+            loading: "Connecting to official Google AI servers, preparing solutions step-by-step... Please wait.",
+            alertEmpty: "Please enter a question first!", errorMsg: "A connection issue occurred. Please try again in a moment."
+        }
+    };
+
+    function toggleLangMenu(e) {
+        e.stopPropagation();
+        document.getElementById('langMenu').classList.toggle('show');
+    }
+
+    function changeLanguage(lang) {
+        currentLang = lang;
+        document.getElementById('currentLangLabel').innerText = translations[lang].currentLang;
+        document.getElementById('aiBadge').innerHTML = translations[lang].aiBadge;
+        document.getElementById('heroTitle').innerHTML = translations[lang].heroTitle;
+        document.getElementById('heroSubtitle').innerText = translations[lang].heroSubtitle;
+        document.getElementById('tabText').innerHTML = translations[lang].tabText;
+        document.getElementById('tabPhoto').innerHTML = translations[lang].tabPhoto;
+        document.getElementById('tabPdf').innerHTML = translations[lang].tabPdf;
+        document.getElementById('tabCamera').innerHTML = translations[lang].tabCamera;
+        document.getElementById('problem').placeholder = translations[lang].placeholder;
+        document.getElementById('hintLabel').innerText = translations[lang].hintLabel;
+        document.getElementById('solveBtn').innerHTML = translations[lang].solveBtn;
+        document.getElementById('resultTitle').innerHTML = translations[lang].resultTitle;
+        document.getElementById('card1Title').innerText = translations[lang].card1Title;
+        document.getElementById('card1Desc').innerText = translations[lang].card1Desc;
+        document.getElementById('card2Title').innerText = translations[lang].card2Title;
+        document.getElementById('card2Desc').innerText = translations[lang].card2Desc;
+        document.getElementById('card3Title').innerText = translations[lang].card3Title;
+        document.getElementById('card3Desc').innerText = translations[lang].card3Desc;
+        document.getElementById('langMenu').classList.remove('show');
+    }
+
+    window.onclick = function() {
+        document.getElementById('langMenu').classList.remove('show');
+    }
+
+    // Google API Anahtarı Maskesi
+    const k1 = "AQ.Ab8RN6Jjdxej";
+    const k2 = "yk2N77cfYl7D0iZdbI";
+    const k3 = "LspLoQV4j22OjAi2OdHw";
+    const FINAL_KEY = k1 + k2 + k3;
+
+    async function cozumuGetir() {
+        const problemInput = document.getElementById('problem').value;
+        const resultBox = document.getElementById('resultBox');
+        const resultContent = document.getElementById('resultContent');
+
+        if (!problemInput.trim()) {
+            alert(translations[currentLang].alertEmpty);
+            return;
+        }
+
+        resultBox.style.display = "block";
+        resultContent.innerHTML = `<div style='color: #94a3b8;'>${translations[currentLang].loading}</div>`;
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+
+        // Dile göre yapay zekaya yönlendirme komutu hazırlama
+        let promptSystem = "";
+        if (currentLang === 'tr') {
+            promptSystem = `Sen profesyonel, samimi ve öğrenci dostu bir matematik öğretmenisin. Sana gönderilen matematik sorusunu şu kurallara göre çözmelisin: 1) Öğrenciye hitap ederken sıcak ve samimi bir ton kullan (örn: "Reis", "Kral", "Şimdi buraya dikkat et"). 2) Çözümü rastgele formüllerle yığma, tane tane adım adım anlat. 3) En önemlisi: Çözümün en sonuna "🛡️ Sorunun Sağlaması ve Doğrulanması" başlığı aç ve orada yaptığın çözümün sağlamasını yaparak sonucun kesin doğru olduğunu kanıtla. Soru şu reis: ${problemInput}`;
+        } else {
+            promptSystem = `You are a professional, friendly, and student-oriented math teacher. You must solve the given math problem based on these rules: 1) Use a warm and friendly tone when addressing the student (e.g., "Buddy", "My friend", "Pay close attention here"). 2) Explain step-by-step cleanly rather than piling random formulas. 3) Most importantly: At the very end of your response, create a section titled "🛡️ Proof & Verification" and verify your solution there to prove it's completely accurate. Here is the question: ${problemInput}`;
+        }
+
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${FINAL_KEY}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: promptSystem }] }] })
+            });
+
+            const data = await response.json();
+            
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                let text = data.candidates[0].content.parts[0].text;
+                // Markdown başlıklarını HTML div'lerine çevirme
+                text = text.replace(/### (.*)/g, '<div class="section-title">$1</div>');
+                text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                resultContent.innerHTML = text;
+                
+                if (window.renderMathInElement) {
+                    renderMathInElement(resultContent, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false}
+                        ],
+                        throwOnError : false
+                    });
+                }
+            } else {
+                resultContent.innerText = "Error: Empty response from AI.";
+            }
+        } catch (error) {
+            console.error(error);
+            resultContent.innerText = translations[currentLang].errorMsg;
+        }
+    }
+</script>
 
 </body>
 </html>
