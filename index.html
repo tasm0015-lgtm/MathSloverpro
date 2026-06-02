@@ -54,7 +54,7 @@
         .preview-container img { max-width: 100%; max-height: 250px; border-radius: 8px; border: 1px solid #30363d; }
         
         .camera-zone { display: none; flex-direction: column; align-items: center; gap: 15px; background: #0d1117; border: 1px solid #30363d; padding: 20px; border-radius: 16px; margin-bottom: 20px; }
-        video { width: 100%; max-width: 400px; border-radius: 12px; background: #000; transform: scaleX(-1); }
+        video { width: 100%; max-width: 400px; border-radius: 12px; background: #000; }
         canvas { display: none; }
 
         .action-btn { width: 100%; background: #0284c7; color: #fff; border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -167,9 +167,13 @@
 <script>
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
+    // 🔥 BURAYA KENDİ GEMINI API KEYİNİ YAPIŞTIR REİS
+    const GEMINI_API_KEY = "AQ.Ab8RN6Jjdxejyk2N77cfYl7D0iZdbILspLoQV4j22OjAi2OdHw";
+
     let currentLang = 'tr';
     let activeTab = 'text';
     let uploadedImageBase64 = ""; 
+    let mimeType = "image/jpeg";
     let localStream = null;
 
     const translations = {
@@ -263,15 +267,12 @@
         }
     }
 
-    // 🔥 Çözünürlüğü Düşürüp Boyutu Optimize Eden Resim Sıkıştırıcı
-    function compressAndStoreImage(imgElement) {
+    function processAndResizeImage(imgElement) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        
-        // Boyut Sınırı: Maksimum genişlik 800px olacak şekilde oranlı küçültüyoruz
         let width = imgElement.width;
         let height = imgElement.height;
-        const max_size = 800;
+        const max_size = 1024; // Gemini için ideal genişlik
 
         if (width > height) {
             if (width > max_size) { height *= max_size / width; width = max_size; }
@@ -283,8 +284,10 @@
         canvas.height = height;
         ctx.drawImage(imgElement, 0, 0, width, height);
         
-        // JPEG kalitesini %60 yaparak sunucu boyut sınırını tamamen aşmasını sağlıyoruz
-        uploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.6);
+        // Ham base64 verisini (headersız) alıyoruz
+        const fullBase64 = canvas.toDataURL('image/jpeg', 0.75);
+        uploadedImageBase64 = fullBase64.split(',')[1]; 
+        mimeType = "image/jpeg";
     }
 
     function handlePhotoUpload(input) {
@@ -296,7 +299,7 @@
                 img.onload = function() {
                     document.getElementById('photoPreview').src = e.target.result;
                     document.getElementById('photoPreviewContainer').style.display = 'block';
-                    compressAndStoreImage(img);
+                    processAndResizeImage(img);
                 };
                 img.src = e.target.result;
             }
@@ -307,14 +310,14 @@
     function handlePdfUpload(input) {
         const file = input.files[0];
         if (file) {
-            document.getElementById('pdfStatus').innerText = currentLang === 'tr' ? "PDF taranıyor ve görselleştiriliyor..." : "Scanning and rendering PDF...";
+            document.getElementById('pdfStatus').innerText = currentLang === 'tr' ? "PDF taranıyor..." : "Scanning PDF...";
             const reader = new FileReader();
             reader.onload = async function() {
                 try {
                     const typedarray = new Uint8Array(this.result);
                     const pdf = await pdfjsLib.getDocument(typedarray).promise;
                     const page = await pdf.getPage(1);
-                    const viewport = page.getViewport({ scale: 1.5 }); // Makul bir ölçek
+                    const viewport = page.getViewport({ scale: 1.5 });
                     
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
@@ -325,9 +328,10 @@
                     
                     const img = new Image();
                     img.onload = function() {
-                        document.getElementById('pdfPreview').src = canvas.toDataURL('image/jpeg');
+                        const dataUrl = canvas.toDataURL('image/jpeg');
+                        document.getElementById('pdfPreview').src = dataUrl;
                         document.getElementById('pdfPreviewContainer').style.display = 'block';
-                        compressAndStoreImage(img);
+                        processAndResizeImage(img);
                         document.getElementById('pdfStatus').innerText = currentLang === 'tr' ? "PDF 1. Sayfa Hazır!" : "PDF Page 1 Ready!";
                     };
                     img.src = canvas.toDataURL('image/jpeg');
@@ -341,7 +345,10 @@
 
     async function startCamera() {
         try {
-            localStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+            // Mobil cihazlar için arka kamerayı önceliklendiriyoruz
+            localStream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: { ideal: "environment" } } 
+            });
             document.getElementById('video').srcObject = localStream;
         } catch (err) {
             alert("Kameraya erişilemedi reis!");
@@ -352,7 +359,7 @@
         if (localStream) { localStream.getTracks().forEach(track => track.stop()); }
     }
 
-    // 🔥 KRİTİK GÜNCELLEME: Kamerayı simetrik olarak düz çeken fonksiyon
+    // 🔥 KAMERANIN TERS ÇEKMESİNİ ENGELLEYEN YENİ SİSTEM
     function takeSnapshot() {
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
@@ -360,13 +367,12 @@
         canvas.height = video.videoHeight;
         const ctx = canvas.getContext('2d');
         
-        // Aynalamayı düzeltmek için ekseni yatayda ters çevirip çiziyoruz
-        ctx.translate(canvas.width, 0);
-        ctx.scale(-1, 1);
+        // Videoyu olduğu gibi, herhangi bir yön taklası attırmadan ham haliyle yakalıyoruz
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
-        uploadedImageBase64 = dataUrl;
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+        uploadedImageBase64 = dataUrl.split(',')[1];
+        mimeType = "image/jpeg";
         
         document.getElementById('cameraPreview').src = dataUrl;
         document.getElementById('cameraPreviewContainer').style.display = 'block';
@@ -375,15 +381,12 @@
     async function cozumuGetir() {
         const resultBox = document.getElementById('resultBox');
         const resultContent = document.getElementById('resultContent');
-        let finalPrompt = "";
 
         if (activeTab === 'text') {
             const problemText = document.getElementById('problem').value.trim();
             if (!problemText) { alert(translations[currentLang].alertEmpty); return; }
-            finalPrompt = "Soru metni şudur reis: " + problemText;
         } else {
             if (!uploadedImageBase64) { alert(translations[currentLang].alertEmpty); return; }
-            finalPrompt = "Sana bir matematik sorusunun görsel verisini (Base64) gönderiyorum. Görseldeki denklemi veya şekli adım adım çöz reis: " + uploadedImageBase64;
         }
 
         resultBox.style.display = "block";
@@ -391,32 +394,47 @@
         resultBox.scrollIntoView({ behavior: 'smooth' });
 
         let systemInstruction = "";
+        let promptText = "";
+
         if (currentLang === 'tr') {
-            systemInstruction = "Sen profesyonel, samimi bir matematik öğretmenisin. Soruyu adım adım anlaşılır çöz. En sona '🛡️ Sorunun Sağlaması ve Doğrulanması' başlığı açıp kontrol et.";
+            systemInstruction = "Sen profesyonel, samimi ve öğrenci dostu bir matematik öğretmenisin. Çözümü rastgele formüllerle yığma, tane tane adım adım anlat. En önemlisi: Çözümün en sonuna '🛡️ Sorunun Sağlaması ve Doğrulanması' başlığı aç ve orada yaptığın çözümün sağlamasını yaparak sonucun kesin doğru olduğunu kanıtla.";
+            promptText = activeTab === 'text' ? document.getElementById('problem').value.trim() : "Lütfen bu görseldeki matematik sorusunu, formülleri veya geometrik şekilleri dikkatlice analiz et ve adım adım çöz reis.";
         } else {
-            systemInstruction = "You are a professional math tutor. Solve step-by-step cleanly. Open a '🛡️ Proof & Verification' section at the end.";
+            systemInstruction = "You are a professional, friendly, and student-oriented math teacher. Explain step-by-step cleanly. At the very end, create a section titled '🛡️ Proof & Verification' and verify your solution.";
+            promptText = activeTab === 'text' ? document.getElementById('problem').value.trim() : "Please carefully analyze the math problem, formulas, or geometric shapes in this image and solve it step-by-step, my friend.";
+        }
+
+        // Gemini 1.5 Flash API Gövde Yapısı
+        let contentsData = [];
+        if (activeTab === 'text') {
+            contentsData = [{
+                parts: [{ text: systemInstruction + "\n\nSoru: " + promptText }]
+            }];
+        } else {
+            contentsData = [{
+                parts: [
+                    { inlineData: { mimeType: mimeType, data: uploadedImageBase64 } },
+                    { text: systemInstruction + "\n\n" + promptText }
+                ]
+            }];
         }
 
         try {
-            // Yeni güncel enter.pollinations.ai endpoint yapısı ve mistral-large modeli
-            const response = await fetch('https://text.pollinations.ai/', {
+            // Doğrudan resmi Google Gemini API endpointine istek atılıyor
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    messages: [
-                        { role: 'system', content: systemInstruction },
-                        { role: 'user', content: finalPrompt }
-                    ],
-                    model: 'mistral-large'
-                })
+                body: JSON.stringify({ contents: contentsData })
             });
 
-            const textResponse = await response.text();
+            const data = await response.json();
             
-            if (textResponse && textResponse.trim().length > 0) {
-                let text = textResponse;
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                let text = data.candidates[0].content.parts[0].text;
+                
+                // Markdown dönüşümleri
                 text = text.replace(/### (.*)/g, '<div class="section-title">$1</div>');
-                text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                text = text.replace(/\*\*(.*?)\*\"/g, '<strong>$1</strong>');
                 resultContent.innerHTML = text;
                 
                 if (window.renderMathInElement) {
